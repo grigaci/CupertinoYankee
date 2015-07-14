@@ -33,7 +33,7 @@ static NSDate * CYDateFromString(NSString *string) {
     dispatch_once(&onceToken, ^{
         _dateFormatter = [[NSDateFormatter alloc] init];
         _dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        _dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss ZZZZZ";
+        _dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ssZZZZZ";
     });
 
     return [_dateFormatter dateFromString:string];
@@ -57,6 +57,83 @@ static NSDate * CYDateFromString(NSString *string) {
 
 - (void)testDate {
     XCTAssertNotNil(self.date);
+}
+
+- (void)testBeginningOfDay {
+	XCTAssertEqualObjects([self.date beginningOfDay], CYDateFromString(@"2012-07-19 00:00:00 +0000"));
+}
+
+- (void)testEndOfDay {
+	XCTAssertEqualObjects([self.date endOfDay], CYDateFromString(@"2012-07-19 23:59:59 +0000"));
+}
+
+- (void)testNextDay {
+    
+    XCTAssertEqualObjects([self.date nextDay], CYDateFromString(@"2012-07-20 14:30:45 +0000"));
+}
+
+- (void)testPreviousDay {
+    
+    XCTAssertEqualObjects([self.date previousDay], CYDateFromString(@"2012-07-18 14:30:45 +0000"));
+}
+
+- (void)testBeginningOfWeekIsFirstWeekday {
+    NSDate *today = [NSDate date];
+    NSDate *beginningOfTodaysWeek = [today beginningOfWeek];
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
+    NSDateComponents *weekdayComponent = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:beginningOfTodaysWeek];
+#pragma clang diagnostic pop
+    XCTAssertEqual([[NSCalendar currentCalendar] firstWeekday], (NSUInteger)weekdayComponent.weekday);
+}
+
+- (void)testBeginningOfWeek {
+	XCTAssertEqualObjects([self.date beginningOfWeek], CYDateFromString(@"2012-07-16 00:00:00 +0000"));
+}
+
+- (void)testEndOfWeek {
+	XCTAssertEqualObjects([self.date endOfWeek], CYDateFromString(@"2012-07-22 23:59:59 +0000"));
+}
+
+- (void)testNextWeek {
+    XCTAssertEqualObjects([self.date nextWeek], CYDateFromString(@"2012-07-26 14:30:45 +0000"));
+}
+
+- (void)testPreviousWeek {
+    XCTAssertEqualObjects([self.date previousWeek], CYDateFromString(@"2012-07-12 14:30:45 +0000"));
+}
+
+- (void)testBeginningOfMonth {
+	XCTAssertEqualObjects([self.date beginningOfMonth], CYDateFromString(@"2012-07-01 00:00:00 +0000"));
+}
+
+- (void)testEndOfMonth {
+	XCTAssertEqualObjects([self.date endOfMonth], CYDateFromString(@"2012-07-31 23:59:59 +0000"));
+}
+
+- (void)testNextMonth {
+    XCTAssertEqualObjects([self.date nextMonth], CYDateFromString(@"2012-08-19 14:30:45 +0000"));
+}
+
+- (void)testPreviousMonth {
+    XCTAssertEqualObjects([self.date previousMonth], CYDateFromString(@"2012-06-19 14:30:45 +0000"));
+}
+
+- (void)testBeginningOfYear {
+	XCTAssertEqualObjects([self.date beginningOfYear], CYDateFromString(@"2012-01-01 00:00:00 +0000"));
+}
+
+- (void)testEndOfYear {
+	XCTAssertEqualObjects([self.date endOfYear], CYDateFromString(@"2012-12-31 23:59:59 +0000"));
+}
+
+- (void)testNextYear {
+    XCTAssertEqualObjects([self.date nextYear], CYDateFromString(@"2013-07-19 14:30:45 +0000"));
+}
+
+- (void)testPreviousYear {
+    XCTAssertEqualObjects([self.date previousYear], CYDateFromString(@"2011-07-19 14:30:45 +0000"));
 }
 
 @end
