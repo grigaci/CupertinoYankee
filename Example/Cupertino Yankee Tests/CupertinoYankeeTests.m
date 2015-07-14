@@ -33,7 +33,7 @@ static NSDate * CYDateFromString(NSString *string) {
     dispatch_once(&onceToken, ^{
         _dateFormatter = [[NSDateFormatter alloc] init];
         _dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        _dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
+        _dateFormatter.dateFormat = @"yyyy-MM-dd";
     });
 
     return [_dateFormatter dateFromString:string];
@@ -50,7 +50,7 @@ static NSDate * CYDateFromString(NSString *string) {
 
     [NSTimeZone setDefaultTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 
-    self.date = CYDateFromString(@"2012-07-19 14:30:45 +0000");
+    self.date = CYDateFromString(@"2012-07-19");
 }
 
 #pragma mark -
