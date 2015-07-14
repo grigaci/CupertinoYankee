@@ -33,7 +33,7 @@ static NSDate * CYDateFromString(NSString *string) {
     dispatch_once(&onceToken, ^{
         _dateFormatter = [[NSDateFormatter alloc] init];
         _dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        _dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss ZZZZZ";
+        _dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss ZZZZZ";
     });
 
     return [_dateFormatter dateFromString:string];
